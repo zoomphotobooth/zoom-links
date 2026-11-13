@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Small Business Spotlight Virtual Booth</title>
+<meta name="description" content="A branded virtual photo booth for your small business. One QR code or link turns any phone into your photo booth. By Zoom Photobooth Co., Ottawa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Same world as the eSAX print pieces: warm paper, charcoal, one champagne-gold accent.
+     Layout idea: a stage-lit charcoal hero with a phone "playing" real booth photos, then calm paper sections. */
+  --paper: #FBF8F2;
+  --card: #FFFFFF;
+  --ink: #1C1B1A;
+  --muted: #4A4640;
+  --line: #E4DDCF;
+  --gold: #C9A24B;
+  --gold-text: #7A5C14;
+  --stage: #141312;
+  --stage-text: #F3E3BC;
+  --font-display: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--paper); color: var(--ink); font-family: var(--font-body); font-size: 17px; line-height: 1.55; }
+img { max-width: 100%; display: block; }
+a { color: var(--gold-text); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; letter-spacing: -0.02em; }
+.wrap { width: min(1120px, 100% - 40px); margin-inline: auto; }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-text); }
+
+/* Top bar */
+.top { background: var(--stage); color: var(--stage-text); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.08em; font-size: 15px; }
+.offer-pill { font-size: 13px; font-weight: 600; border: 1.5px solid var(--gold); color: var(--stage-text); border-radius: 999px; padding: 6px 14px; }
+
+/* Hero: the stage */
+.hero { background: var(--stage); color: var(--stage-text); position: relative; overflow: hidden; }
+.hero::before, .hero::after { content: ""; position: absolute; top: -80px; width: 420px; height: 900px; background: linear-gradient(180deg, rgba(232,196,110,0.32), rgba(232,196,110,0) 80%); filter: blur(24px); pointer-events: none; }
+.hero::before { left: -120px; transform: rotate(-18deg); transform-origin: top center; }
+.hero::after { right: -120px; transform: rotate(18deg); transform-origin: top center; }
+.hero .wrap { position: relative; z-index: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 48px; align-items: center; padding: 56px 0 72px; }
+.hero .eyebrow { color: var(--gold); }
+.hero h1 { font-size: clamp(44px, 6.4vw, 78px); line-height: 0.98; color: #FFFFFF; margin-top: 14px; }
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero p.lede { font-size: 19px; max-width: 34em; color: #E9E4DA; margin: 22px 0 0; }
+.ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 50px; padding: 0 24px; border-radius: 999px; font-family: var(--font-display); font-weight: 700; font-size: 17px; text-decoration: none; border: 2px solid transparent; }
+.btn-gold { background: var(--gold); color: var(--ink); }
+.btn-gold:hover { background: #D9B86A; }
+.btn-ghost { border-color: var(--stage-text); color: var(--stage-text); }
+.btn-ghost:hover { background: rgba(243,227,188,0.1); }
+.hero .note { font-size: 14px; color: #BDB3A0; margin-top: 14px; }
+
+.phone { justify-self: center; width: min(320px, 80vw); background: #000; border-radius: 44px; padding: 14px; box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 2px #2A2826; }
+.screen { border-radius: 32px; overflow: hidden; background: #1C1B1A; }
+.screen-bar { color: #E9E4DA; font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-align: center; padding: 14px 0 10px; }
+.slides { position: relative; aspect-ratio: 1 / 1; }
+.slides img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; animation: cycle 18s infinite; }
+.slides img:nth-child(1) { opacity: 1; animation-delay: 0s; }
+.slides img:nth-child(2) { animation-delay: 3s; }
+.slides img:nth-child(3) { animation-delay: 6s; }
+.slides img:nth-child(4) { animation-delay: 9s; }
+.slides img:nth-child(5) { animation-delay: 12s; }
+.slides img:nth-child(6) { animation-delay: 15s; }
+@keyframes cycle { 0% { opacity: 0; } 3% { opacity: 1; } 17% { opacity: 1; } 20% { opacity: 0; } 100% { opacity: 0; } }
+.screen-actions { display: flex; gap: 8px; padding: 14px; }
+.screen-actions span { flex: 1; text-align: center; border-radius: 999px; padding: 9px 0; font-size: 13px; font-weight: 700; }
+.screen-actions .share { background: var(--gold); color: var(--ink); }
+.screen-actions .again { border: 1.5px solid #E9E4DA; color: #E9E4DA; }
+@media (prefers-reduced-motion: reduce) {
+  .slides img { animation: none; opacity: 0; }
+  .slides img:nth-child(1) { opacity: 1; }
+}
+
+/* Sections */
+section { padding: 72px 0; }
+section + section { border-top: 1px solid var(--line); }
+.section-head { display: flex; flex-direction: column; gap: 10px; max-width: 46em; margin-bottom: 32px; }
+.section-head h2 { font-size: clamp(30px, 4vw, 44px); line-height: 1.05; }
+.section-head p { margin: 0; color: var(--muted); }
+
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; list-style: none; margin: 0; padding: 0; counter-reset: step; }
+.steps li { border-top: 3px solid var(--gold); padding-top: 14px; counter-increment: step; }
+.steps li::before { content: "0" counter(step); font-family: var(--font-display); font-weight: 700; color: var(--gold-text); font-size: 15px; }
+.steps h3 { font-size: 21px; margin: 4px 0 6px; }
+.steps p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.places { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.place { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 20px; }
+.place h3 { font-size: 18px; margin-bottom: 4px; }
+.place p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.gallery figure { margin: 0; display: flex; flex-direction: column; gap: 8px; }
+.gallery img { border-radius: 14px; aspect-ratio: 1 / 1; object-fit: cover; border: 1px solid var(--line); }
+.gallery figcaption { font-size: 15px; font-weight: 600; }
+.gallery figcaption span { display: block; font-weight: 400; color: var(--muted); font-size: 14px; }
+.bgs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin-top: 28px; }
+.bgs figure { margin: 0; }
+.bgs img { border-radius: 12px; aspect-ratio: 1 / 1; object-fit: cover; }
+.bgs figcaption { font-size: 14px; color: var(--muted); margin-top: 6px; }
+.sub-label { font-family: var(--font-display); font-weight: 700; font-size: 20px; margin-top: 44px; }
+
+.plans { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+.plan { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; gap: 12px; }
+.plan.featured { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.plan .tag { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-text); }
+.plan.featured .tag { color: var(--gold); }
+.plan h3 { font-size: 24px; }
+.price { font-family: var(--font-display); font-weight: 700; font-size: 40px; line-height: 1; font-variant-numeric: tabular-nums; }
+.price small { font-size: 17px; font-weight: 600; }
+.plan p { margin: 0; font-size: 15px; color: var(--muted); }
+.plan.featured p { color: #E9E4DA; }
+.included { margin: 26px 0 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 32px; }
+.included li { display: flex; gap: 10px; font-size: 15px; }
+.included svg { flex-shrink: 0; margin-top: 3px; }
+
+.offer { background: var(--ink); color: var(--paper); border-radius: 22px; padding: 36px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.offer .eyebrow { color: var(--gold); }
+.offer h2 { font-size: clamp(26px, 3.4vw, 38px); margin-top: 8px; }
+.offer p { margin: 8px 0 0; color: #E9E4DA; }
+
+.faq { display: grid; gap: 10px; max-width: 760px; }
+.faq details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; }
+.faq summary { cursor: pointer; font-weight: 600; }
+.faq p { margin: 10px 0 0; color: var(--muted); }
+
+footer { background: var(--stage); color: #E9E4DA; padding: 48px 0; }
+footer .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: end; }
+footer .brand { color: var(--stage-text); font-size: 18px; }
+footer p { margin: 8px 0 0; font-size: 15px; }
+footer a { color: var(--stage-text); }
+.contact-lines { text-align: right; font-size: 16px; line-height: 1.8; }
+
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; padding: 40px 0 56px; }
+  .steps, .plans { grid-template-columns: 1fr 1fr; }
+  .places, .gallery { grid-template-columns: 1fr 1fr; }
+  .bgs { grid-template-columns: 1fr 1fr; }
+  .offer, footer .wrap { grid-template-columns: 1fr; }
+  .contact-lines { text-align: left; }
+}
+@media (max-width: 520px) {
+  .steps, .plans, .places, .included { grid-template-columns: 1fr; }
+  section { padding: 52px 0; }
+  .offer { padding: 26px; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">ZOOM PHOTOBOOTH CO.</div>
+    <div class="offer-pill">eSAX attendees: setup fee waived + first month free</div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">Small Business Spotlight Virtual Booth</div>
+      <h1>Your customers already have <em>the camera.</em></h1>
+      <p class="lede">One custom QR code or link turns any phone into a photo booth branded for your business. No app, no equipment, no staff. Customers snap and share, and your logo goes with every photo.</p>
+      <div class="ctas">
+        <a class="btn btn-gold" id="demo-btn" href="#samples">See sample photos</a>
+        <a class="btn btn-ghost" href="#plans">See packages</a>
+      </div>
+      <div class="note">Made in Ottawa by Zoom Photobooth Co. Service in English and French.</div>
+    </div>
+    <div class="phone" aria-label="A phone showing photos taken in the virtual booth">
+      <div class="screen">
+        <div class="screen-bar">Snap with us</div>
+        <div class="slides">
+          <img src="images/sample-magcover.jpg" alt="Guest photo in the Founder magazine cover frame">
+          <img src="images/sample-eventstrip.jpg" alt="Guest photo in the eSAX Networking Night frame">
+          <img src="images/sample-tradingcard.jpg" alt="Guest photo in the Entrepreneur trading card frame">
+          <img src="images/sample-shoplocal.jpg" alt="Guest photo in a bakery-branded frame">
+          <img src="images/sample-holiday.jpg" alt="Guest photo in a holiday greetings frame">
+          <img src="images/sample-nametag.jpg" alt="Guest photo with a Hello, I run a business name tag">
+        </div>
+        <div class="screen-actions" aria-hidden="true"><span class="share">Share</span><span class="again">Take another</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">How it works</div>
+      <h2>Four taps from scan to shared.</h2>
+    </div>
+    <ol class="steps">
+      <li><h3>Scan or tap</h3><p>Customers open your QR code or link. It runs in the phone's browser, so there's nothing to download.</p></li>
+      <li><h3>Pick a look</h3><p>They choose your frame and a background: spotlight stage, neon, retro or Ottawa skyline.</p></li>
+      <li><h3>Snap</h3><p>They take the photo on their own phone and retake as often as they like.</p></li>
+      <li><h3>Share</h3><p>They send it by text or email or post it, with your logo and handle on every photo.</p></li>
+    </ol>
+  </div>
+</section>
+
+<section id="where">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Where it lives</div>
+      <h2>Put your booth anywhere you already promote.</h2>
+      <p>Your QR code and link are yours to print and paste. Every scan is a customer showing your brand to their friends.</p>
+    </div>
+    <div class="places">
+      <div class="place"><h3>Restaurant &amp; café tables</h3><p>A table sticker turns waiting time into shared photos.</p></div>
+      <div class="place"><h3>Storefront &amp; counter</h3><p>A window decal or counter card invites walk-ins to snap.</p></div>
+      <div class="place"><h3>Email signature</h3><p>One link under your name in every email you send.</p></div>
+      <div class="place"><h3>Trade-show booth</h3><p>Draw a crowd and collect contacts without extra gear.</p></div>
+      <div class="place"><h3>Cards, flyers &amp; receipts</h3><p>Print the QR code on anything that leaves your hands.</p></div>
+      <div class="place"><h3>Social bio &amp; website</h3><p>Give followers a branded way to show up for you.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="samples">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">What's possible</div>
+      <h2>Frames built for your brand, your season, your event.</h2>
+      <p>These are real photos taken with our sample frames. Yours gets your logo, colours and message, and we refresh it for holidays and promotions.</p>
+    </div>
+    <div class="gallery">
+      <figure><img src="images/sample-shoplocal.jpg" alt="Photo in a bakery-branded frame with a 10% off line" loading="lazy"><figcaption>Your business, branded<span>Logo, colours and a reason to come back.</span></figcaption></figure>
+      <figure><img src="images/sample-magcover.jpg" alt="Photo in the Founder magazine cover frame" loading="lazy"><figcaption>Founder magazine cover<span>Cover lines your customers will want to share.</span></figcaption></figure>
+      <figure><img src="images/sample-tradingcard.jpg" alt="Photo in the Entrepreneur trading card frame" loading="lazy"><figcaption>Trading card<span>Stats, a superpower and a card number.</span></figcaption></figure>
+      <figure><img src="images/sample-eventstrip.jpg" alt="Photo in the eSAX Networking Night frame" loading="lazy"><figcaption>Event frame<span>Built for one night, like eSAX.</span></figcaption></figure>
+      <figure><img src="images/sample-holiday.jpg" alt="Photo in a holiday greetings frame" loading="lazy"><figcaption>Seasonal refresh<span>A new look for holidays and promotions.</span></figcaption></figure>
+      <figure><img src="images/sample-nametag.jpg" alt="Photo with a Hello, I run a business name tag" loading="lazy"><figcaption>Playful sticker<span>Name tags, badges and props.</span></figcaption></figure>
+    </div>
+    <div class="sub-label">Backgrounds, no green screen needed</div>
+    <div class="bgs">
+      <figure><img src="images/bg-spotlight.jpg" alt="Gold spotlight stage background" loading="lazy"><figcaption>In the Spotlight</figcaption></figure>
+      <figure><img src="images/bg-neonopen.jpg" alt="Neon Open for Business sign on brick" loading="lazy"><figcaption>Open for Business</figcaption></figure>
+      <figure><img src="images/bg-retrogrid.jpg" alt="Retro sunset with a glowing grid" loading="lazy"><figcaption>Level Up</figcaption></figure>
+      <figure><img src="images/bg-skyline.jpg" alt="Night skyline with Made in Ottawa" loading="lazy"><figcaption>Made in Ottawa</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="plans">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Small business packages</div>
+      <h2>Priced for main street, not head office.</h2>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <div class="tag">One-time</div>
+        <h3>Spotlight Launch</h3>
+        <div class="price">$299</div>
+        <p>One branded booth for a launch, sale, season or event. Your QR code and link, live for 30 days.</p>
+      </div>
+      <div class="plan featured">
+        <div class="tag">Most popular · 12-month term</div>
+        <h3>Always-On Booth</h3>
+        <div class="price">$99<small>/mo</small></div>
+        <p>Your booth live all year, with a fresh seasonal design every quarter and a usage report.</p>
+      </div>
+      <div class="plan">
+        <div class="tag">Monthly</div>
+        <h3>Always-On Plus</h3>
+        <div class="price">$179<small>/mo</small></div>
+        <p>Everything in Always-On, plus monthly design refreshes and themed backgrounds for holidays and promos.</p>
+      </div>
+    </div>
+    <ul class="included" aria-label="Included in every package">
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Custom frame designed in your brand</li>
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Your own QR code, short link and print-ready artwork</li>
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Instant sharing by text, email and social</li>
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Works on any phone, no app download</li>
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Branded online gallery of every photo</li>
+      <li><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7A5C14" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5l4 4 8-9"/></svg>Setup and changes handled by our Ottawa team</li>
+    </ul>
+  </div>
+</section>
+
+<section id="offer">
+  <div class="wrap">
+    <div class="offer">
+      <div>
+        <div class="eyebrow">eSAX attendee offer</div>
+        <h2>Setup fee waived + your first month free.</h2>
+        <p>Sign up by November 30, 2026. Tell us you met us at eSAX.</p>
+      </div>
+      <a class="btn btn-gold" href="mailto:booking@zoomphotobooth.ca?subject=Small%20Business%20Spotlight%20Booth%20(eSAX)">Email booking@zoomphotobooth.ca</a>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Good to know</h2>
+    </div>
+    <div class="faq">
+      <details><summary>Do my customers need to download an app?</summary><p>No. The booth opens in the phone's web browser from your QR code or link.</p></details>
+      <details><summary>Can I change the design later?</summary><p>Yes. Always-On includes a new seasonal design every quarter, and Always-On Plus refreshes monthly. Ask us any time you have a promotion coming up.</p></details>
+      <details><summary>Do I need a green screen?</summary><p>No. Background scenes are applied to the photo automatically, so customers can be anywhere.</p></details>
+      <details><summary>Who sets it up?</summary><p>We do. Send us your logo and colours, and we design the frame, set up the booth and send you your QR code and print-ready artwork.</p></details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="brand">ZOOM PHOTOBOOTH CO.</div>
+      <p>Photo booth experiences for Ottawa-Gatineau, Toronto and Montréal since 2019. Service in English and French.</p>
+    </div>
+    <div class="contact-lines">
+      <a href="mailto:booking@zoomphotobooth.ca">booking@zoomphotobooth.ca</a><br>
+      <a href="tel:+16136905535">(613) 690-5535</a><br>
+      <a href="https://zoomphotobooth.ca">zoomphotobooth.ca</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Set this to the eSAX Fiesta booth link once it's live; the hero button then opens the demo.
+  var DEMO_URL = '';
+  (function () {
+    var b = document.getElementById('demo-btn');
+    if (DEMO_URL && b) { b.href = DEMO_URL; b.textContent = 'Try the live demo'; }
+  })();
+</script>
+</body>
+</html>
